@@ -7,7 +7,7 @@ const openai = new OpenAI({
 
 export async function POST(request: Request) {
   try {
-    const { prompt } = await request.json();
+    const { prompt, model = "dall-e-3" } = await request.json();
 
     if (!prompt) {
       return NextResponse.json(
@@ -17,10 +17,11 @@ export async function POST(request: Request) {
     }
 
     const response = await openai.images.generate({
-      model: "dall-e-3",
+      model: model,
       prompt: prompt,
       n: 1,
       size: "1024x1024",
+      quality: "hd"
     });
 
     return NextResponse.json({ imageUrl: response.data[0].url });
