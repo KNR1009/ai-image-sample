@@ -434,3 +434,14 @@ a.secondary {
   cursor: not-allowed;
   pointer-events: none;
 }
+
+.modelDescription {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+.modelInfo {
+  margin-top: 0.5rem;
+}

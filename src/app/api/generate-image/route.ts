@@ -16,15 +16,32 @@ export async function POST(request: Request) {
       );
     }
 
+    let size: string;
+    let quality: string | undefined;
+    let style: string | undefined;
+
+    if (model === "dall-e-3") {
+      size = "1024x1024";
+      quality = "hd";
+      style = "vivid";
+    } else if (model === "dall-e-2" || model === "gpt-image-1") {
+      size = "1024x1024";
+    }
+
     const response = await openai.images.generate({
       model: model,
       prompt: prompt,
       n: 1,
-      size: "1024x1024",
-      quality: "hd"
+      size: size,
+      ...(quality && { quality }),
+      ...(style && { style }),
+      ...(model === "gpt-image-1" && { background: "transparent" })
     });
 
-    return NextResponse.json({ imageUrl: response.data[0].url });
+    console.log(response);
+
+    const imageBase64 = response.data[0].b64_json;
+    return NextResponse.json({ imageUrl: `data:image/png;base64,${imageBase64}` });
   } catch (error) {
     console.error("OpenAI API エラー:", error);
     return NextResponse.json(

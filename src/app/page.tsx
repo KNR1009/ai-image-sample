@@ -13,7 +13,7 @@ export default function Home() {
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [model, setModel] = useState<"dall-e-3" | "dall-e-2">("dall-e-3");
+  const [model, setModel] = useState<"dall-e-3" | "dall-e-2" | "gpt-image-1">("dall-e-3");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handlePromptSubmit = async (e: FormEvent) => {
@@ -182,11 +182,29 @@ export default function Home() {
                 id="model-select"
                 className={styles.select}
                 value={model}
-                onChange={(e) => setModel(e.target.value as "dall-e-3" | "dall-e-2")}
+                onChange={(e) => setModel(e.target.value as "dall-e-3" | "dall-e-2" | "gpt-image-1")}
               >
                 <option value="dall-e-3">DALL-E 3（高品質）</option>
+                <option value="gpt-image-1">GPT-Image-1（最新）</option>
                 <option value="dall-e-2">DALL-E 2（標準）</option>
               </select>
+              <div className={styles.modelInfo}>
+                {model === "gpt-image-1" && (
+                  <p className={styles.modelDescription}>
+                    GPT-Image-1は最新の画像生成モデルで、より自然で詳細な画像を生成します。
+                  </p>
+                )}
+                {model === "dall-e-3" && (
+                  <p className={styles.modelDescription}>
+                    DALL-E 3は高品質な画像を生成し、テキストの描画も得意です。
+                  </p>
+                )}
+                {model === "dall-e-2" && (
+                  <p className={styles.modelDescription}>
+                    DALL-E 2は標準的な画像生成モデルで、シンプルな画像に適しています。
+                  </p>
+                )}
+              </div>
             </div>
             <textarea
               className={styles.textArea}
